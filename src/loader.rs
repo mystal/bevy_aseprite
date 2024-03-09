@@ -79,10 +79,15 @@ pub(crate) fn process_load(
 
             // Build out texture atlas
             let frames = data.frames();
-            let ase_images = frames
+            let ase_images = match frames
                 .get_for(&(0..frames.count() as u16))
-                .get_images()
-                .unwrap();
+                .get_images() {
+                Ok(images) => images,
+                Err(e) => {
+                    error!("Failed to get images from Aseprite data:\n{}", e);
+                    return;
+                }
+            };
 
             let mut frame_handles = vec![];
             let mut atlas = TextureAtlasBuilder::default();

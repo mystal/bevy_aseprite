@@ -197,6 +197,11 @@ impl AsepriteAnimation {
     pub fn toggle(&mut self) {
         self.is_playing = !self.is_playing;
     }
+
+    /// Returns `true` if current animation tag matches `tag`
+    pub fn is_tag(&self, tag: &str) -> bool {
+        self.tag.as_deref() == Some(tag)
+    }
 }
 
 pub(crate) fn update_animations(

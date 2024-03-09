@@ -715,7 +715,7 @@ fn image_for_frame(aseprite: &Aseprite, frame: u16) -> AseResult<RgbaImage> {
             continue;
         }
 
-        let mut blank_cel: AsepriteCel;
+        let blank_cel: AsepriteCel;
 
         let cel = match layer.get_cel(frame as usize) {
             Ok(aseprite_cel) => aseprite_cel,
@@ -751,6 +751,10 @@ fn image_for_frame(aseprite: &Aseprite, frame: u16) -> AseResult<RgbaImage> {
                 for y in 0..height {
                     let pix_x = cel.x as i16 + x as i16;
                     let pix_y = cel.y as i16 + y as i16;
+
+                    if pix_x >= dim.0 as i16 || pix_y >= dim.1 as i16 {
+                        return Err(AsepriteError::InvalidConfiguration(AsepriteInvalidError::InvalidFrame(frame as usize)));
+                    }
 
                     if pix_x < 0 || pix_y < 0 {
                         continue;
